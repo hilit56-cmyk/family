@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="תמונה משפחתית אינטראקטיבית">
+  <title>המשפחה שלנו</title>
+  <style>
+    :root {
+      --bg:#f4f1eb;
+      --text:#20242a;
+      --muted:#646b75;
+      --accent:#236f78;
+      --accent-dark:#17545b;
+      --panel:rgba(255,255,255,.97);
+      --border:rgba(32,36,42,.14);
+      --shadow:0 18px 55px rgba(0,0,0,.18);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,"Noto Sans Hebrew",sans-serif;background:var(--bg);color:var(--text)}
+    main{width:min(1180px,100%);margin:auto;padding:22px}
+    header{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+    h1{margin:0;font-size:clamp(1.5rem,3.2vw,2.35rem)}
+    .subtitle{margin:.35rem 0 0;color:var(--muted)}
+    .photo{position:relative;overflow:hidden;border-radius:22px;background:#ddd;box-shadow:var(--shadow);line-height:0}
+    .photo img{display:block;width:100%;height:auto}
+    .marker{
+      position:absolute;transform:translate(-50%,-50%);width:clamp(31px,4.2vw,46px);height:clamp(31px,4.2vw,46px);
+      border-radius:999px;border:3px solid white;background:var(--accent);color:white;font:700 clamp(.9rem,2vw,1.15rem)/1 Arial;
+      display:grid;place-items:center;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.38);transition:.18s ease
+    }
+    .marker:hover,.marker:focus-visible{background:var(--accent-dark);transform:translate(-50%,-50%) scale(1.12);outline:none}
+    .popover{
+      position:absolute;z-index:20;display:none;width:min(310px,calc(100% - 24px));padding:15px;background:var(--panel);
+      border:1px solid var(--border);border-radius:17px;box-shadow:var(--shadow);line-height:1.4
+    }
+    .popover.open{display:block}
+    .name-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+    .badge{display:grid;place-items:center;min-width:31px;height:31px;border-radius:50%;background:var(--accent);color:white;font-weight:700}
+    .popover h2{margin:0;font-size:1.18rem}
+    .age{margin:0 0 5px;font-weight:700}
+    .role{margin:0;color:var(--muted)}
+    .close{position:absolute;left:9px;top:8px;border:0;background:transparent;font-size:1.25rem;cursor:pointer;color:var(--muted)}
+    footer{padding:12px 2px 0;color:var(--muted);font-size:.9rem}
+    @media(max-width:620px){main{padding:10px}.photo{border-radius:14px}header{align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>המשפחה שלנו</h1>
+        <p class="subtitle">לחצו על מספר כדי להכיר כל אחד ואחת.</p>
+      </div>
+    </header>
+
+    <section class="photo" id="photo" aria-label="תמונה משפחתית אינטראקטיבית">
+      <img src="family.jpg" alt="תמונה משפחתית קבוצתית">
+      <button class="marker" type="button" data-id="1" style="left:25.4%;top:18.2%;" aria-label="איתן, מספר 1">1</button>
+<button class="marker" type="button" data-id="2" style="left:30.2%;top:27.0%;" aria-label="לביא, מספר 2">2</button>
+<button class="marker" type="button" data-id="3" style="left:34.8%;top:19.0%;" aria-label="הודיה, מספר 3">3</button>
+<button class="marker" type="button" data-id="4" style="left:43.0%;top:16.8%;" aria-label="איתן, מספר 4">4</button>
+<button class="marker" type="button" data-id="5" style="left:51.5%;top:17.5%;" aria-label="הילית, מספר 5">5</button>
+<button class="marker" type="button" data-id="6" style="left:62.0%;top:17.0%;" aria-label="איתיאל, מספר 6">6</button>
+<button class="marker" type="button" data-id="7" style="left:71.0%;top:19.2%;" aria-label="הודיה, מספר 7">7</button>
+<button class="marker" type="button" data-id="8" style="left:24.8%;top:43.5%;" aria-label="אחיה, מספר 8">8</button>
+<button class="marker" type="button" data-id="9" style="left:36.0%;top:44.8%;" aria-label="תהילה, מספר 9">9</button>
+<button class="marker" type="button" data-id="10" style="left:45.5%;top:53.2%;" aria-label="נווה, מספר 10">10</button>
+<button class="marker" type="button" data-id="11" style="left:53.5%;top:51.8%;" aria-label="דביר, מספר 11">11</button>
+<button class="marker" type="button" data-id="12" style="left:60.0%;top:49.8%;" aria-label="שירה, מספר 12">12</button>
+<button class="marker" type="button" data-id="13" style="left:72.0%;top:43.0%;" aria-label="נריה, מספר 13">13</button>
+      <aside class="popover" id="popover" aria-live="polite">
+        <button type="button" class="close" id="close" aria-label="סגירת חלונית">×</button>
+        <div class="name-row">
+          <span class="badge" id="number"></span>
+          <h2 id="name"></h2>
+        </div>
+        <p class="age" id="age"></p>
+        <p class="role" id="role"></p>
+      </aside>
+    </section>
+    <footer>התמונה והמידע מוצגים בעמוד זה בלבד.</footer>
+  </main>
+
+  <script>
+    const people = {"1": {"name": "איתן", "age": "25", "role": "נשוי להודיה, סטודנט למדמ\"ח במכון לב"}, "2": {"name": "לביא", "age": "בן שנה וארבעה חודשים", "role": "לומד במעון במבי"}, "3": {"name": "הודיה", "age": "24", "role": "חוקרת סייבר במייקרוסופט"}, "4": {"name": "איתן", "age": "46", "role": "עו״ד עצמאי ובונה קומה נוספת ביחדיו — לא בסדר הזה"}, "5": {"name": "הילית", "age": "43", "role": "מנהלת המו״פ ברשת אמית"}, "6": {"name": "איתיאל", "age": "23", "role": "בצבא"}, "7": {"name": "הודיה", "age": "23", "role": "סטודנטית להנדסת חשמל בבר־אילן"}, "8": {"name": "אחיה", "age": "20", "role": "תלמיד ישיבת ירוחם וכרגע במודיעין חיל האוויר"}, "9": {"name": "תהילה", "age": "18", "role": "שירות לאומי בדימונה"}, "10": {"name": "נווה", "age": "6", "role": "כיתה א׳ במורשה בנים"}, "11": {"name": "דביר", "age": "8.5", "role": "כיתה ג׳ במורשה בנים"}, "12": {"name": "שירה", "age": "12.5", "role": "כיתה ז׳ באולפנת דרכי נועם"}, "13": {"name": "נריה", "age": "15.5", "role": "כיתה ט׳ בישיבת דרכי נועם"}};
+    const photo = document.getElementById("photo");
+    const popover = document.getElementById("popover");
+    const number = document.getElementById("number");
+    const name = document.getElementById("name");
+    const age = document.getElementById("age");
+    const role = document.getElementById("role");
+
+    function openCard(button) {
+      const id = button.dataset.id;
+      const person = people[id];
+      number.textContent = id;
+      name.textContent = person.name;
+      age.textContent = person.age.startsWith("בן ") ? person.age : `גיל ${person.age}`;
+      role.textContent = person.role;
+      popover.classList.add("open");
+
+      const wrap = photo.getBoundingClientRect();
+      const marker = button.getBoundingClientRect();
+      const width = Math.min(310, wrap.width - 24);
+      popover.style.width = `${width}px`;
+
+      let left = marker.left - wrap.left + marker.width / 2 - width / 2;
+      left = Math.max(12, Math.min(left, wrap.width - width - 12));
+      let top = marker.top - wrap.top + marker.height + 10;
+      popover.style.left = `${left}px`;
+      popover.style.top = `${top}px`;
+
+      requestAnimationFrame(() => {
+        const box = popover.getBoundingClientRect();
+        if (box.bottom > wrap.bottom - 8) {
+          top = Math.max(8, marker.top - wrap.top - box.height - 10);
+          popover.style.top = `${top}px`;
+        }
+      });
+    }
+
+    document.querySelectorAll(".marker").forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        openCard(button);
+      });
+    });
+
+    document.getElementById("close").addEventListener("click", event => {
+      event.stopPropagation();
+      popover.classList.remove("open");
+    });
+
+    popover.addEventListener("click", event => event.stopPropagation());
+    photo.addEventListener("click", () => popover.classList.remove("open"));
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") popover.classList.remove("open");
+    });
+  </script>
+</body>
+</html>
